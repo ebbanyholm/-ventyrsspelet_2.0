@@ -7,6 +7,7 @@ let dörr3 = document.getElementById("dörr-3");
 let alt1 = document.getElementById("alt-1");
 let alt2 = document.getElementById("alt-2");
 let inventoryContainer = document.getElementById("inventory-container");
+let continueK = document.getElementById("continue");
 
 let player = {
 	namn: "Link",
@@ -25,7 +26,7 @@ outputText.textContent =
 //problem under
 //----------------------------------------------
 // Man kan t ex ställa färgen på ett område
-outputText.style.backgroundColor = "None";
+outputText.style.backgroundColor = "none";
 
 function Nytt() {
 	outputText.textContent = "Redo för nytt val";
@@ -51,7 +52,7 @@ class Existerande {
 	TaSaker() {
 		let funnet_loot = this.loot.pop();
 		// ej samma sker twice
-		outputText = `Du har tagit ${funnet_loot.typ} med styrka ${funnet_loot.styrka}`;
+		outputText.textContent = `Du har funnit ${funnet_loot.typ} med styrka ${funnet_loot.styrka}`;
 		return funnet_loot;
 	}
 
@@ -63,7 +64,7 @@ class Existerande {
 
 	blanda() {
 		for (let i = this.loot.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
+			const j = Math.floor(Math.random() * (i - 1) + 1);
 			const temp = this.loot[i];
 			this.loot[i] = this.loot[j];
 			this.loot[j] = temp;
@@ -85,6 +86,10 @@ Marken.visaExisterande();
 
 let iMonster = false;
 let iKista = false;
+let iFälla = false;
+
+let m_hp = 0;
+let m_styrka = 0;
 
 //-----------------------------
 function slå_till() {
@@ -98,6 +103,7 @@ function slå_till() {
 		outputText.textContent =
 			"Du tar och försöker skada monstret med din styrka. Du är för långsam och monstret har bra reflexer. Du missade monstret";
 	}
+
 	m_slag();
 }
 
@@ -129,7 +135,8 @@ function spring_iväg() {
 		if (self.hp <= 0) break;*/
 }
 function m_slag() {
-	m_slag_resultat = Math.random() * (2 - 1) + 1;
+	alert("m slag");
+	let m_slag_resultat = Math.random() * (2 - 1) + 1;
 	/*
 		Du är utmattad
 		Monstret tar nu sin chans att slå dig
@@ -154,21 +161,20 @@ function m_slag() {
 	}
 }
 function monster() {
-	iMonster = true;
 	outputText.textContent =
 		"Du står öga mot öga med ett monster..Vad vill du göra";
 	alt1.textContent = "slå till";
 	alt2.textContent = "spring!!";
 
-	if (lvl < 5) {
+	if (player.level < 5) {
 		m_styrka = Math.random() * (15 - 1) + 1;
 		m_hp = Math.random() * (15 - 1) + 1;
 	} else if (
-		player.styrka == 5 ||
-		player.styrka == 6 ||
-		player.styrka == 7 ||
-		player.styrka == 8 ||
-		player.styrka == 9
+		player.level == 5 ||
+		player.level == 6 ||
+		player.level == 7 ||
+		player.level == 8 ||
+		player.level == 9
 	) {
 		m_styrka = Math.random() * (20 - 10) + 10;
 		m_hp = Math.random() * (20 - 10) + 10;
@@ -176,19 +182,27 @@ function monster() {
 		m_styrka = Math.random() * (35 - 25) + 25;
 		m_hp = randint(25, 35);
 	}
+	iMonster = true;
+}
+
+function slut() {
+	alt1.textContent = " ";
+	alt2.textContent = " ";
 }
 
 function spara() {
 	alert("sparad");
-	let Mitt_Item = Marken.TaSaker();
 	Ryggsäck.push[Mitt_Item];
-	outputText.textContent = `Du fick ${Mitt_Item}`;
+	outputText.textContent = `Du fick ${Mitt_Item.typ}`;
 	iKista = false;
+	slut();
 }
 
 function släng() {
+	alert("slängd");
 	outputText.textContent = `Du döda ditt nya item och slände iväg det`;
 	iKista = false;
+	slut();
 }
 
 function kista() {
@@ -196,22 +210,26 @@ function kista() {
 	outputText.textContent = "Yeeey!! En kista!!";
 	alt1.textContent = "spara";
 	alt2.textContent = "släng";
-	let RandomTM = Math.floor(Math.random() * 2);
+	let RandomTM = Math.random() * (2 - 1) + 1;
 
 	if (RandomTM == 1) {
-		let Merliv = Math.floor(Math.random() * 100);
+		let Merliv = Math.random() * (100 - 1) + 1;
 		player.liv += Merliv;
-		outputText.textContent = `Du fick ${Merliv} mer i liv`;
+		inventoryContainer.textContent = `Du fick ${Merliv} mer i liv`;
 		iKista = false;
+		slut();
 	} else {
+		let Mitt_Item = Marken.TaSaker();
+		outputText.textContent = `Du har hittat ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka}`;
+
 		if (Ryggsäck.length == 0) {
-			let Mitt_Item = Marken.TaSaker();
 			Ryggsäck.push[Mitt_Item];
-			outputText.textContent = `Du fick ${Mitt_Item}`;
+			inventoryContainer.textContent = `Du fick ${Mitt_Item.typ}`;
 			iKista = false;
+			slut();
 		} else {
 			for (let i = 0; i < Ryggsäck.lenght; i++) {
-				outputText.TextContent = `I inventoryt har du ${Ryggsäck[i].typ} med styrka ${Ryggsäck[i].styrka}`;
+				inventoryContainer.TextContent = `I inventoryt har du ${Ryggsäck[i].typ} med styrka ${Ryggsäck[i].styrka}`;
 			}
 		}
 	}
@@ -219,9 +237,10 @@ function kista() {
 
 function fälla() {
 	iFälla = true;
-	let sortsfälla = Math.floor(Math.random() * 7);
+	let sortsfälla = Math.floor(Math.random() * 8);
 	if (sortsfälla == 0 || sortsfälla == 1) {
-		outputText.textContent = "flavor text";
+		outputText.textContent =
+			"Du såg inte att golvet saknades i vissa delar, du råkar kliva i ett av hålen och stukar foten";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 3;
@@ -229,7 +248,8 @@ function fälla() {
 	}
 
 	if (sortsfälla == 2 || sortsfälla == 3) {
-		outputText.textConent = "flavor text 2";
+		outputText.textConent =
+			"Du märkte inte att det var en glasvägg framför dig, du går in i den och bryter näsan";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 6;
@@ -237,7 +257,8 @@ function fälla() {
 	}
 
 	if (sortsfälla == 4 || sortsfälla == 5) {
-		outputText.textConent = "flavor text 3";
+		outputText.textConent =
+			"Plötsligt kommer du till en avsats, du tappar balansen och faller ner";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 9;
@@ -245,7 +266,8 @@ function fälla() {
 	}
 
 	if (sortsfälla == 6) {
-		outputText.textConent = "flavor text 4";
+		outputText.textConent =
+			"Du går igenom en dörr och märker en svart katt framför dig, du väljer att klappa katten och märker inte fällan du utlöser som skjuter en pil i din axel";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 12;
@@ -253,7 +275,8 @@ function fälla() {
 	}
 
 	if (sortsfälla == 7) {
-		outputText.textConent = "flavor text 5";
+		outputText.textConent =
+			"Det är en märklig del på golvet som är gjord av trä, du försöker gå över den men trillar igenom det ruttna träet på en vass sten";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 15;
@@ -285,6 +308,8 @@ function slumpa_händelse() {
 dörr1.addEventListener("click", slumpa_händelse);
 dörr2.addEventListener("click", slumpa_händelse);
 dörr3.addEventListener("click", slumpa_händelse);
+
+continueK.addEventListener("click");
 
 alt1.addEventListener("click", () => {
 	if (iKista == true) {

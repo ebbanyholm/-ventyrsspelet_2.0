@@ -2,7 +2,7 @@ body {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(#282828, #434343);
+    background: linear-gradient(#272727, #272727);
   }
   
   #super-container {
@@ -159,6 +159,8 @@ body {
     border: solid;
     border-color: black;
   }
+  
+
   #text-output-container {
     /*Rutan som textutmatningen sker i*/
     display: flex; /* Flex ger ett rutmönster */
@@ -177,6 +179,21 @@ body {
     border-width: 1.5px;
     /*-radius: 15px; *//* Rundade hörn */
     /*display: none;*/
+  }
+  #continue-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centering i kolumnen, dvs vertikalt */
+    margin: 50%;
+    border: solid; 
+    border-color : black
+  }
+  #continue {
+    font-size: 18pt;
+    background-color: rgb(58, 57, 56);
+    color: black;
+    width: 90px;
+    height: 40px;
   }
   #aktivitets-container {
     display: flex; /* Flex ger ett rutmönster */
