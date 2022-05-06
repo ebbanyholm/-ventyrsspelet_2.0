@@ -128,98 +128,107 @@ let fast = false;
 let m_hp = 0;
 let m_styrka = 0;
 //-----------------------------
-function slå_till() {
-	let strid = 1; /*Math.random() * (3 - 1) + 1*/
-	if (strid == 1 || strid == 2) {
-		//alert("slag");
-		outputText.textContent =
-			"Du tar i och svingar ett stort slag mot monstret. Monstret kan inte undvika det och tar skada";
-		m_hp -= player.styrka;
-	} else {
-		outputText.textContent =
-			"Du tar och försöker skada monstret med din styrka. Du är för långsam och monstret har bra reflexer. Du missade monstret";
-	}
 
-	m_slag();
-}
-
-function spring_iväg() {
-	spring = Math.random() * (3 - 1) + 1;
-
-	if (player.styrka <= m_styrka) {
-		if (spring > 1) {
-			/*förskök igen*/
-		}
-		if (spring == 1) {
-			//du sprang iväg - nästa dörr
-		}
-	}
-
-	if (player.styrka > m_styrka) {
-		if (spring > 2) {
-			/*förskök igen*/
-		}
-		if (spring == 1 || spring == 2) {
-			//något händer : du sprang iväg - ny dörr
-		}
-	}
-	/*if (m_hp <= 0) break;
-		//Monstret blev ledset och sprang iväg
-		//Du lvlade upp!
-		lvl += 1;
-		// ny dörr	
-		if (self.hp <= 0) break;*/
-}
-function m_slag() {
-	alert("m slag");
-	let m_slag_resultat = Math.random() * (2 - 1) + 1;
-	/*
-		Du är utmattad
-		Monstret tar nu sin chans att slå dig
-		Monstert tar i från tårna med ett STORT slag
-		''')*/
-	if (m_slag_resultat == 0 || m_slag_resultat == 2) {
-		alert("m s m");
-		outputText.textContent = "Monstret missade dig";
-		/*Monstret missade dig
-			"input("Klicka 'enter' för att fortsätta")""
-			ny dörr*/
-	} else if (m_slag_resultat == 2) {
-		alert("m s t");
-		outputText.textContent = "Monstret träffade dig";
-		/*Monstret träffade dig
-			Du förlorade {m_styrka} hälsopoäng
-			*/
-		player.liv -= m_styrka;
-		/*
-			input("Klicka 'enter' för att fortsätta")
-			ny dörr*/
-	}
-}
 function monster() {
-	fast = true;
+	fast == true;
+	iMonster = true;
+
 	outputText.textContent =
 		"Du står öga mot öga med ett monster..Vad vill du göra";
 	alt1.textContent = "slå till";
 	alt2.textContent = "spring!!";
 
 	if (player.level < 5) {
-		m_styrka = Math.random() * (15 - 1) + 1;
-		m_hp = Math.random() * (15 - 1) + 1;
-	} else if (
-		player.level == 5 ||
-		player.level == 6 ||
-		player.level == 7 ||
-		player.level == 8 ||
-		player.level == 9
-	) {
-		m_styrka = Math.random() * (20 - 10) + 10;
-		m_hp = Math.random() * (20 - 10) + 10;
+		m_styrka = Math.floor(Math.random() * (15 - 1) + 1);
+		m_hp = Math.floor(Math.random() * (15 - 1) + 1);
+	} else if (player.level >= 5 && player.level < 10) {
+		m_styrka = Math.floor(Math.random() * (20 - 10) + 10);
+		m_hp = Math.floor(Math.random() * (20 - 10) + 10);
 	} else {
-		m_styrka = Math.random() * (35 - 25) + 25;
-		m_hp = randint(25, 35);
+		m_styrka = Math.floor(Math.random() * (35 - 25) + 25);
+		m_hp = Math.floor(Math.random() * (35 - 25) + 25);
 	}
-	iMonster = true;
+	if (m_hp <= 0) {
+		outputText.textContent("Du dödade monstret och gick där med upp en level.");
+		player.level += 1;
+	}
+	if (player.liv <= 0) {
+		outputText.textContent("Game Over. Du dog");
+	}
+
+	function slå_till() {
+		let strid = 1; /*Math.random() * (3 - 1) + 1;*/
+		inventoryContainer.textContent = `m_hp: ${m_hp}`;
+
+		if (strid == 1 || strid == 2) {
+			//alert("slag");
+			outputText.textContent =
+				"Du tar i och svingar ett stort slag mot monstret. Monstret kan inte undvika det och tar skada";
+			m_hp -= player.styrka;
+			inventoryContainer.textContent += `\n m_hp: ${m_hp}`;
+			inventoryContainer.textContent += `\n player.styrka: ${player.styrka}`;
+		} else {
+			outputText.textContent =
+				"Du tar och försöker skada monstret med din styrka. Du är för långsam och monstret har bra reflexer. Du missade monstret";
+		}
+		continueK.addEventListener("click", m_slag);
+	}
+	function frånMbörjan() {
+		continueK.addEventListener("click", monster);
+	}
+	function spring_iväg() {
+		spring = Math.floor(Math.random() * 3 + 1);
+		alert(spring);
+
+		if (player.styrka <= m_styrka) {
+			if (spring > 1) {
+				outputText.textContent = "du missluckades med att springa iväg";
+				frånMbörjan();
+			} else if (spring == 1) {
+				outputText.textContent = "du sparng iväg";
+				//du sprang iväg - nästa dörr
+			}
+		}
+		if (player.styrka > m_styrka) {
+			if (spring == 3) {
+				outputText.textContent = "du missluckades med att springa iväg";
+				frånMbörjan();
+			} else if (spring < 3) {
+				outputText.textContent = "du sparng iväg";
+				//du sprang iväg - ny dörr
+			}
+		}
+	}
+	function m_slag_resultat() {
+		let m_resultat = Math.floor(Math.random() * (2 - 1) + 1);
+		if (m_resultat <= 2) {
+			outputText.textContent = "Monstret missade dig";
+			/*Monstret missade dig
+				"input("Klicka 'enter' för att fortsätta")""
+				ny dörr*/
+		} else if (m_resultat > 2) {
+			outputText.textContent = "Monstret träffade dig";
+			/*Monstret träffade dig
+				Du förlorade {m_styrka} hälsopoäng
+				*/
+			player.liv -= m_styrka;
+			/*
+				input("Klicka 'enter' för att fortsätta")
+				ny dörr*/
+		}
+		frånMbörjan();
+	}
+	function visa_resultat() {
+		continueK.addEventListener("click", m_slag_resultat);
+	}
+	function m_slag() {
+		outputText.textContent =
+			"Du är utmattad. Monstert tar i från tårna med ett STORT slag";
+
+		visa_resultat();
+	}
+	alt1.addEventListener("click", slå_till);
+	alt2.addEventListener("click", spring_iväg);
 }
 
 function slut() {
@@ -383,6 +392,20 @@ function slumpa_händelse() {
 // alert(`Du heter ${player.namn}`);
 
 // Lägger till en EventListener till outputContainer
+
+if (iMonster == true) {
+	alt1.addEventListener("click", slå_till);
+	alt2.addEventListener("click", spring_iväg);
+	fast == true;
+} else if (iKista == true) {
+	alt1.addEventListener("click", spara);
+	alt2.addEventListener("click", släng);
+	fast == true;
+} else if (iFälla == true) {
+	alt1.addEventListener("click");
+	alt2.addEventListener("click");
+	fast == true;
+}
 if (fast == false) {
 	dörr1.addEventListener("click", slumpa_händelse);
 	dörr2.addEventListener("click", slumpa_händelse);
@@ -394,24 +417,6 @@ if (fast == false) {
 }
 
 continueK.addEventListener("click");
-
-alt1.addEventListener("click", () => {
-	if (iKista == true) {
-		spara();
-	} else if (iMonster == true) {
-		slå_till();
-	} else if (iFälla == true) {
-	}
-});
-
-alt2.addEventListener("click", () => {
-	if (iKista == true) {
-		släng();
-	} else if (iMonster == true) {
-		spring_iväg();
-	} else if (iFälla == true) {
-	}
-});
 
 continueK.addEventListener("click", () => {
 	if (iKista == true) {
