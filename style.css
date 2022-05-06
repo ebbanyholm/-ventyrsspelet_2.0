@@ -107,7 +107,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centering i kolumnen, dvs vertikalt */
-    margin: 5%;
+    margin: -2%;
     border: solid; 
   }
   #alt-2-container {
@@ -115,14 +115,14 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centering i kolumnen, dvs vertikalt */
-    margin: -2%;
+    margin: 5%;
     border: solid; 
   }
   #alt-1 {
     font-size: 18pt;
     background-color:rgb(58, 57, 56);
     color: black;
-    width: 90px;
+    width: 70px;
     height: 80px;
   }
   
@@ -130,7 +130,7 @@ body {
     font-size: 18pt;
     background-color: rgb(58, 57, 56);
     color: black;
-    width: 90px;
+    width: 70px;
     height: 80px;
   }
   
@@ -147,24 +147,10 @@ body {
     background: linear-gradient(#0e1029, #0e1029c2);
     border-radius: 15px;
   }
-  #inventory-container {
-    display: flex; /* Flex ger ett rutmönster */
-    flex-direction: row;
-    justify-content: left; /* Centrering på raden, dvs horisontellt */
-    align-items: center;
-    color: white;
-    width: 20%;
-    height: 25vh;
-    padding: 2%;
-    border: solid;
-    border-color: black;
-  }
-  
-
   #text-output-container {
     /*Rutan som textutmatningen sker i*/
     display: flex; /* Flex ger ett rutmönster */
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     font-family: Courier ;
     font-size: 20px;
@@ -180,20 +166,49 @@ body {
     /*-radius: 15px; *//* Rundade hörn */
     /*display: none;*/
   }
+
+  #text-container{
+    display: flex; /* Flex ger ett rutmönster */
+    flex-direction: center;
+    justify-content: center; /* Centrering på raden, dvs horisontellt */
+    align-items: center;
+    color: white;
+    width: 95.5%;
+    height: 60%;
+    padding: 1%;
+    margin: 1%;
+    border: solid;
+    border-color: purple;
+  }
   #continue-container{
     display: flex;
     flex-direction: row;
-    justify-content: center; /* Centering i kolumnen, dvs vertikalt */
-    margin: 50%;
+    justify-content: right; /* Centering i kolumnen, dvs vertikalt */
+    margin: 1%;
     border: solid; 
-    border-color : black
+    border-color : transparent;
+  
+
   }
   #continue {
-    font-size: 18pt;
+    font-size: 16pt;
     background-color: rgb(58, 57, 56);
-    color: black;
+    color: white;
     width: 90px;
-    height: 40px;
+    height: 30px;
+    font-family: Courier ;
+  }
+  #inventory-container {
+    display: flex; /* Flex ger ett rutmönster */
+    flex-direction: column;
+    justify-content: left; /* Centrering på raden, dvs horisontellt */
+    align-items: center;
+    color: white;
+    width: 20%;
+    height: 25vh;
+    padding: 2%;
+    border: solid;
+    border-color: black;
   }
   #aktivitets-container {
     display: flex; /* Flex ger ett rutmönster */

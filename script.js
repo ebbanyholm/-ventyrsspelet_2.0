@@ -1,5 +1,5 @@
 // Taggarna output-text och output-container återfinns i HTML-filen
-let outputText = document.getElementById("text-output-container");
+let outputText = document.getElementById("text-container");
 let stats_text = document.getElementById("stats-text-container");
 let dörr1 = document.getElementById("dörr-1");
 let dörr2 = document.getElementById("dörr-2");
@@ -9,6 +9,7 @@ let alt2 = document.getElementById("alt-2");
 let inventoryContainer = document.getElementById("inventory-container");
 let continueK = document.getElementById("continue");
 
+continueK.textContent = "→";
 let player = {
 	namn: "Link",
 	liv: 100,
@@ -72,14 +73,44 @@ class Existerande {
 	}
 }
 
+class ddd {
+	constructor() {
+		this.fff = [];
+	}
+
+	eee(saker) {
+		this.fff.push(saker);
+		//lägg till
+	}
+
+	rrr() {
+		let funnet_loot = this.fff.pop();
+		// ej samma sker twice
+		outputText.textContent = `Du har funnit ${funnet_loot.typ} med styrka ${funnet_loot.styrka}`;
+		return funnet_loot;
+		//ta bort
+	}
+
+	ppp() {
+		this.fff.forEach((items) => {
+			console.log(`Det finns ${items.typ} med styrka ${items.styrka}`);
+		});
+	}
+	//visa saker
+}
+
 let Marken = new Existerande();
 //marken är lootet
-let Ryggsäck = [];
+let Ryggsäck = new ddd();
 
 //skapar items --> looten
 let items = new Items("svärd", 1);
 Marken.LTS(items);
 items = new Items("sten", 5);
+Marken.LTS(items);
+items = new Items("L", 10000);
+Marken.LTS(items);
+items = new Items("Banan", 200);
 Marken.LTS(items);
 
 Marken.visaExisterande();
@@ -87,10 +118,15 @@ Marken.visaExisterande();
 let iMonster = false;
 let iKista = false;
 let iFälla = false;
+let iFälla1 = false;
+let iFälla2 = false;
+let iFälla3 = false;
+let iFälla4 = false;
+let iFälla5 = false;
+let fast = false;
 
 let m_hp = 0;
 let m_styrka = 0;
-
 //-----------------------------
 function slå_till() {
 	let strid = 1; /*Math.random() * (3 - 1) + 1*/
@@ -161,6 +197,7 @@ function m_slag() {
 	}
 }
 function monster() {
+	fast = true;
 	outputText.textContent =
 		"Du står öga mot öga med ett monster..Vad vill du göra";
 	alt1.textContent = "slå till";
@@ -192,8 +229,17 @@ function slut() {
 
 function spara() {
 	alert("sparad");
-	Ryggsäck.push[Mitt_Item];
+
+	let aaa = Ryggsäck.rrr();
+	Marken.LTS(aaa);
+	Marken.visaExisterande();
+	player.styrka -= aaa.styrka;
+
+	Ryggsäck.eee(Mitt_Item);
 	outputText.textContent = `Du fick ${Mitt_Item.typ}`;
+	Ryggsäck.ppp();
+	player.styrka += Mitt_item.styrka;
+
 	iKista = false;
 	slut();
 }
@@ -210,7 +256,7 @@ function kista() {
 	outputText.textContent = "Yeeey!! En kista!!";
 	alt1.textContent = "spara";
 	alt2.textContent = "släng";
-	let RandomTM = Math.random() * (2 - 1) + 1;
+	let RandomTM = Math.random() * 2 + 1;
 
 	if (RandomTM == 1) {
 		let Merliv = Math.random() * (100 - 1) + 1;
@@ -219,18 +265,20 @@ function kista() {
 		iKista = false;
 		slut();
 	} else {
+		Marken.blanda();
 		let Mitt_Item = Marken.TaSaker();
 		outputText.textContent = `Du har hittat ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka}`;
 
-		if (Ryggsäck.length == 0) {
-			Ryggsäck.push[Mitt_Item];
+		if (Ryggsäck.fff.length == 0) {
+			Ryggsäck.eee(Mitt_Item);
 			inventoryContainer.textContent = `Du fick ${Mitt_Item.typ}`;
+			Ryggsäck.ppp();
+			player.styrka += Mitt_Item.styrka;
+
 			iKista = false;
 			slut();
 		} else {
-			for (let i = 0; i < Ryggsäck.lenght; i++) {
-				inventoryContainer.TextContent = `I inventoryt har du ${Ryggsäck[i].typ} med styrka ${Ryggsäck[i].styrka}`;
-			}
+			inventoryContainer.TextContent = `I inventoryt har du ${Ryggsäck.fff[0].typ} med styrka ${Ryggsäck.fff[0].styrka}`;
 		}
 	}
 }
@@ -239,49 +287,79 @@ function fälla() {
 	iFälla = true;
 	let sortsfälla = Math.floor(Math.random() * 8);
 	if (sortsfälla == 0 || sortsfälla == 1) {
+		iFälla1 = true;
 		outputText.textContent =
 			"Du såg inte att golvet saknades i vissa delar, du råkar kliva i ett av hålen och stukar foten";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 3;
-		inventoryContainer.textContent = "Du förlorade 3 liv";
 	}
 
 	if (sortsfälla == 2 || sortsfälla == 3) {
-		outputText.textConent =
+		iFälla2 = true;
+		outputText.textContent =
 			"Du märkte inte att det var en glasvägg framför dig, du går in i den och bryter näsan";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 6;
-		inventoryContainer.textContent = "Du förlorade 6 liv";
 	}
 
 	if (sortsfälla == 4 || sortsfälla == 5) {
-		outputText.textConent =
+		iFälla3 = true;
+		outputText.textContent =
 			"Plötsligt kommer du till en avsats, du tappar balansen och faller ner";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 9;
-		inventoryContainer.textContent = "Du förlorade 9 liv";
 	}
 
 	if (sortsfälla == 6) {
-		outputText.textConent =
+		iFälla4 = true;
+		outputText.textContent =
 			"Du går igenom en dörr och märker en svart katt framför dig, du väljer att klappa katten och märker inte fällan du utlöser som skjuter en pil i din axel";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 12;
-		inventoryContainer.textContent = "Du förlorade 12 liv";
 	}
 
 	if (sortsfälla == 7) {
-		outputText.textConent =
+		iFälla5 = true;
+		outputText.textContent =
 			"Det är en märklig del på golvet som är gjord av trä, du försöker gå över den men trillar igenom det ruttna träet på en vass sten";
 		alt1.textContent = " ";
 		alt2.textContent = " ";
 		player.liv -= 15;
-		inventoryContainer.textContent = "Du förlorade 15 liv";
 	}
+}
+
+function fällaliv1() {
+	outputText.textContent = "Du förlorade 3 liv";
+	iFälla = false;
+	iFälla1 = false;
+}
+
+function fällaliv2() {
+	outputText.textContent = "Du förlorade 6 liv";
+	iFälla = false;
+	iFälla2 = false;
+}
+
+function fällaliv3() {
+	outputText.textContent = "Du förlorade 9 liv";
+	iFälla = false;
+	iFälla3 = false;
+}
+
+function fällaliv4() {
+	outputText.textContent = "Du förlorade 12 liv";
+	iFälla = false;
+	iFälla4 = false;
+}
+
+function fällaliv5() {
+	outputText.textContent = "Du förlorade 15 liv";
+	iFälla = false;
+	iFälla5 = false;
 }
 
 function slumpa_händelse() {
@@ -305,9 +383,15 @@ function slumpa_händelse() {
 // alert(`Du heter ${player.namn}`);
 
 // Lägger till en EventListener till outputContainer
-dörr1.addEventListener("click", slumpa_händelse);
-dörr2.addEventListener("click", slumpa_händelse);
-dörr3.addEventListener("click", slumpa_händelse);
+if (fast == false) {
+	dörr1.addEventListener("click", slumpa_händelse);
+	dörr2.addEventListener("click", slumpa_händelse);
+	dörr3.addEventListener("click", slumpa_händelse);
+} else if (fast == true) {
+	dörr1.addEventListener("click");
+	dörr2.addEventListener("click");
+	dörr3.addEventListener("click");
+}
 
 continueK.addEventListener("click");
 
@@ -326,5 +410,21 @@ alt2.addEventListener("click", () => {
 	} else if (iMonster == true) {
 		spring_iväg();
 	} else if (iFälla == true) {
+	}
+});
+
+continueK.addEventListener("click", () => {
+	if (iKista == true) {
+	} else if (iMonster == true) {
+	} else if (iFälla1 == true) {
+		fällaliv1();
+	} else if (iFälla2 == true) {
+		fällaliv2();
+	} else if (iFälla3 == true) {
+		fällaliv3();
+	} else if (iFälla4 == true) {
+		fällaliv4();
+	} else if (iFälla5 == true) {
+		fällaliv5();
 	}
 });
