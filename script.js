@@ -141,8 +141,10 @@ function alt_på() {
 	alt2.disabled = false;
 }
 function continueK_av() {
-	alt1.disabled = true;
-	alt2.disabled = true;
+	continueK.disabled = true;
+}
+function continueK_på() {
+	continueK.disabled = false;
 }
 function välj_dörr() {
 	dörrar_på();
@@ -159,7 +161,7 @@ let m_styrka = 0;
 function monster() {
 	dörrar_av();
 	alt_på();
-	//continueK_av();
+	continueK_av();
 	outputText.textContent =
 		"Du står öga mot öga med ett monster..Vad vill du göra";
 	alt1.textContent = "slå till";
@@ -183,9 +185,11 @@ function monster() {
 		outputText.textContent("Game Over. Du dog");
 	}
 	function frånMbörjan() {
+		continueK_på();
 		continueK.addEventListener("click", monster);
 	}
 	function slå_till() {
+		continueK_på();
 		alert("slag");
 		alt_av();
 		let strid = 1; /*Math.random() * (3 - 1) + 1;*/
@@ -233,13 +237,16 @@ function monster() {
 
 	function m_slag() {
 		alt_av();
+		continueK_på();
 
 		outputText.textContent =
 			"Du är utmattad. Monstert tar i från tårna med ett STORT slag";
 
 		function visa_resultat() {
+			alt_av();
 			function m_slag_resultat() {
-				let m_resultat = Math.floor(Math.random() * (2 - 1) + 1);
+				alt_av();
+				let m_resultat = Math.floor(Math.random() * (5 - 1) + 1);
 				if (m_resultat <= 2) {
 					outputText.textContent = "Monstret missade dig";
 					frånMbörjan();
@@ -249,9 +256,13 @@ function monster() {
 				} else if (m_resultat > 2) {
 					outputText.textContent = "Monstret träffade dig";
 					frånMbörjan();
-					/*Monstret träffade dig
-						Du förlorade {m_styrka} hälsopoäng
-						*/
+					function förlora_liv() {
+						alt_av;
+						outputText.textContent = `Du förlorade ${m_styrka} liv.`;
+						player.liv -= m_styrka;
+					}
+					continueK.addEventListener("click", förlora_liv);
+
 					player.liv -= m_styrka;
 					/*
 						input("Klicka 'enter' för att fortsätta")
