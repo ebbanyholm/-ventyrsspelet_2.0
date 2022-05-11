@@ -115,30 +115,41 @@ Marken.LTS(items);
 
 Marken.visaExisterande();
 
-let iMonster = false;
-let iKista = false;
-let iFälla = false;
-let fast = false;
-function tom() {
-	alert("stop");
-}
+dörr1.addEventListener("click", slumpa_händelse);
+dörr2.addEventListener("click", slumpa_händelse);
+dörr3.addEventListener("click", slumpa_händelse);
 
-if (fast == false) {
-	dörr1.addEventListener("click", slumpa_händelse);
-	dörr2.addEventListener("click", slumpa_händelse);
-	dörr3.addEventListener("click", slumpa_händelse);
-} else if (fast == true) {
-	dörr1.disabled = true;
-	dörr2.disabled = true;
-	dörr3.disabled = true;
+function dörrar_av() {
+	alt1.disabled = true;
+	alt2.disabled = true;
+}
+function dörrar_på() {
+	alt1.disabled = false;
+	alt2.disabled = false;
+}
+function töm_alt_text() {
+	alt1.textContent = "";
+	alt2.textContent = "";
 }
 function alt_av() {
 	alt1.disabled = true;
 	alt2.disabled = true;
+	töm_alt_text();
 }
 function alt_på() {
 	alt1.disabled = false;
 	alt2.disabled = false;
+}
+function continueK_av() {
+	alt1.disabled = true;
+	alt2.disabled = true;
+}
+function välj_dörr() {
+	dörrar_på();
+	alt_av();
+	continueK_av();
+	outputText.textContent =
+		"Du har tre dörrar framför dig. Vilken vill du gå ni i? Klicka på en dörr för att öppna den.";
 }
 
 let m_hp = 0;
@@ -146,8 +157,9 @@ let m_styrka = 0;
 //-----------------------------
 
 function monster() {
-	fast = true;
+	dörrar_av();
 	alt_på();
+	//continueK_av();
 	outputText.textContent =
 		"Du står öga mot öga med ett monster..Vad vill du göra";
 	alt1.textContent = "slå till";
@@ -174,6 +186,7 @@ function monster() {
 		continueK.addEventListener("click", monster);
 	}
 	function slå_till() {
+		alert("slag");
 		alt_av();
 		let strid = 1; /*Math.random() * (3 - 1) + 1;*/
 		inventoryContainer.textContent = `m_hp: ${m_hp}`;
@@ -191,6 +204,7 @@ function monster() {
 		}
 		continueK.addEventListener("click", m_slag);
 	}
+
 	function spring_iväg() {
 		alt_av();
 		spring = Math.floor(Math.random() * 3 + 1);
@@ -214,86 +228,112 @@ function monster() {
 			}
 		}
 	}
-	function m_slag_resultat() {
-		let m_resultat = Math.floor(Math.random() * (2 - 1) + 1);
-		if (m_resultat <= 2) {
-			outputText.textContent = "Monstret missade dig";
-			/*Monstret missade dig
-				"input("Klicka 'enter' för att fortsätta")""
-				ny dörr*/
-		} else if (m_resultat > 2) {
-			outputText.textContent = "Monstret träffade dig";
-			/*Monstret träffade dig
-				Du förlorade {m_styrka} hälsopoäng
-				*/
-			player.liv -= m_styrka;
-			/*
-				input("Klicka 'enter' för att fortsätta")
-				ny dörr*/
-		}
-		frånMbörjan();
-	}
-	function visa_resultat() {
-		continueK.addEventListener("click", m_slag_resultat);
-	}
+	alt1.addEventListener("click", slå_till);
+	alt2.addEventListener("click", spring_iväg);
+
 	function m_slag() {
+		alt_av();
+
 		outputText.textContent =
 			"Du är utmattad. Monstert tar i från tårna med ett STORT slag";
 
+		function visa_resultat() {
+			function m_slag_resultat() {
+				let m_resultat = Math.floor(Math.random() * (2 - 1) + 1);
+				if (m_resultat <= 2) {
+					outputText.textContent = "Monstret missade dig";
+					frånMbörjan();
+					/*Monstret missade dig
+						"input("Klicka 'enter' för att fortsätta")""
+						ny dörr*/
+				} else if (m_resultat > 2) {
+					outputText.textContent = "Monstret träffade dig";
+					frånMbörjan();
+					/*Monstret träffade dig
+						Du förlorade {m_styrka} hälsopoäng
+						*/
+					player.liv -= m_styrka;
+					/*
+						input("Klicka 'enter' för att fortsätta")
+						ny dörr*/
+				}
+			}
+			continueK.addEventListener("click", m_slag_resultat);
+		}
+
 		visa_resultat();
 	}
-	alt1.addEventListener("click", slå_till);
-	alt2.addEventListener("click", spring_iväg);
 }
-
-function slut() {
-	alt1.textContent = " ";
-	alt2.textContent = " ";
-}
-
-function spara() {
-	alert("sparad");
-
-	let aaa = Ryggsäck.rrr();
-	Marken.LTS(aaa);
-	Marken.visaExisterande();
-	player.styrka -= aaa.styrka;
-
-	Ryggsäck.eee(Mitt_Item);
-	outputText.textContent = `Du fick ${Mitt_Item.typ}`;
-	Ryggsäck.ppp();
-	player.styrka += Mitt_Item.styrka;
-	stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}, Styrka: ${player.styrka}, Lvl: ${player.level}`;
-
-	iKista = false;
-	slut();
-}
-
-function släng() {
-	alert("slängd");
-	outputText.textContent = `Du döda ditt nya item och slände iväg det`;
-	iKista = false;
-	slut();
-}
+//-------------------------------------------------------------------------------------------------------------
 
 var Mitt_Item = "heh";
 function kista() {
-	iKista = true;
 	outputText.textContent = "Yeeey!! En kista!!";
-	alt1.textContent = "spara";
-	alt2.textContent = "släng";
-	let RandomTM = Math.floor(Math.random() * 2 + 1);
 
-	if (RandomTM == 1) {
+	let RandomTM = 2; /*Math.floor(Math.random() * 2 + 1);*/
+
+	function spara() {
+		alert("sparad");
+
+		/*let aaa = Ryggsäck.rrr();
+		Marken.LTS(aaa);
+		Marken.visaExisterande();
+		player.styrka -= aaa.styrka;
+
+		Ryggsäck.eee(Mitt_Item);
+		outputText.textContent = `Du fick ${Mitt_Item.typ}`;
+		Ryggsäck.ppp();
+		player.styrka += Mitt_Item.styrka;
+		stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}, Styrka: ${player.styrka}, Lvl: ${player.level}`;
+		*/
+		alert("sparedghg");
+		alt_av();
+		välj_dörr();
+	}
+	function släng() {
+		alert("slängd");
+		outputText.textContent = `Du döda ditt nya item och slände iväg det`;
+		alt_av();
+		välj_dörr();
+	}
+
+	function visa_föremål() {
+		Marken.blanda();
+		Mitt_Item = Marken.TaSaker();
+		function fråga() {
+			function frågan() {
+				outputText.textContent = `Vill du spara ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka}?`;
+				alt1.textContent = "Ja";
+				alt2.textContent = "Nej";
+				alt1.addEventListener("click", spara);
+				alt2.addEventListener("click", släng);
+			}
+			continueK.addEventListener("click", frågan);
+			alt_på();
+		}
+		function hittade() {
+			Marken.blanda();
+			Mitt_Item = Marken.TaSaker();
+			//outputText.textContent = `Du har hittat ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka}`;
+			console.log("");
+			console.log(Mitt_Item);
+			fråga();
+		}
+		continueK.addEventListener("click", hittade);
+	}
+
+	visa_föremål();
+
+	/*if (RandomTM == 1) {
 		let Merliv = Math.floor(Math.random() * (20 - 1) + 1);
 		player.liv += Merliv;
 		inventoryContainer.textContent = `Du fick ${Merliv} mer i liv`;
 		stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}, Styrka: ${player.styrka}, Lvl: ${player.level}`;
 
-		iKista = false;
-		slut();
-		fast = false;
+		dörrar_på();
 	} else {
+		dörrar_av();
+		alt_av();
 		Marken.blanda();
 		Mitt_Item = Marken.TaSaker();
 		outputText.textContent = `Du har hittat ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka}`;
@@ -306,16 +346,14 @@ function kista() {
 			Ryggsäck.ppp();
 			player.styrka += Mitt_Item.styrka;
 			stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}, Styrka: ${player.styrka}, Lvl: ${player.level}`;
-
-			iKista = false;
-			slut();
 		} else {
 			inventoryContainer.TextContent = `I inventoryt har du ${Ryggsäck.fff[0].typ} med styrka ${Ryggsäck.fff[0].styrka}`;
-			alt1.addEventListener("click", spara);
-			alt2.addEventListener("click", släng);
-			fast = true;
+			alt1.textContent = "spara";
+			alt2.textContent = "släng";
+			alt_på();
+			dörrar_av();
 		}
-	}
+	}*/
 }
 
 function fällaliv1() {
@@ -457,13 +495,10 @@ function slumpa_händelse() {
 if (iMonster == true) {
 	alt1.addEventListener("click", slå_till);
 	alt2.addEventListener("click", spring_iväg);
-	fast == true;
 } else if (iKista == true) {
 	alt1.addEventListener("click", spara);
 	alt2.addEventListener("click", släng);
-	fast == true;
 } else if (iFälla == true) {
 	alt1.addEventListener("click");
 	alt2.addEventListener("click");
-	fast == true;
 }
