@@ -78,6 +78,16 @@ body {
     margin: 5%;
     border: solid; 
   }
+  #canvas-container {
+    /*Rutan som knapparna visas i*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centering i kolumnen, dvs vertikalt */
+    margin: 1%;
+    padding: 3%;
+    width: 50%;
+    border: solid rgb(46, 46, 46); 
+  }
   
   #dörr-1 {
     font-size: 20pt;
@@ -102,6 +112,8 @@ body {
     width: 100px;
     height: 200px;
   }
+  
+  
   #alt-1-container {
     /*Rutan som knapparna visas i*/
     display: flex;

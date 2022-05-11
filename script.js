@@ -8,6 +8,7 @@ let alt1 = document.getElementById("alt-1");
 let alt2 = document.getElementById("alt-2");
 let inventoryContainer = document.getElementById("inventory-container");
 let continueK = document.getElementById("continue");
+let canvasen = document.getElementById("canvas-container");
 
 continueK.textContent = "→";
 let player = {
@@ -16,6 +17,12 @@ let player = {
 	level: 1,
 	styrka: 10,
 };
+
+function visa_monster() {
+	canvasen.innerHTML = `<img src="./images/monster_1.jpg" />`;
+	canvasen.innerHTML += `<p>monster_1.jpg</p>`;
+}
+visa_monster();
 
 dörr1.textContent = "1";
 dörr2.textContent = "2";
