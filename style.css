@@ -2,7 +2,7 @@ body {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(#272727, #272727);
+    background: linear-gradient(#1d1b18, #312e29);
   }
   
   #super-container {
@@ -156,7 +156,7 @@ body {
     border: solid;
     padding: 2%;
     border-color: black;
-    background: linear-gradient(#0e1029, #0e1029c2);
+    background: #0e102992;
     border-radius: 15px;
   }
   #text-output-container {
@@ -183,14 +183,14 @@ body {
     display: flex; /* Flex ger ett rutmönster */
     flex-direction: center;
     justify-content: center; /* Centrering på raden, dvs horisontellt */
-    align-items: center;
-    color: white;
+    align-items: left;
+    color: rgb(163, 163, 163);
     width: 95.5%;
     height: 60%;
     padding: 1%;
     margin: 1%;
     border: solid;
-    border-color: purple;
+    border-color: transparent;
   }
   #continue-container{
     display: flex;
@@ -202,9 +202,25 @@ body {
   
 
   }
-  #continue {
+  #continueF {
     font-size: 16pt;
-    background-color: rgb(58, 57, 56);
+    background-color: rgb(41, 41, 41);
+    color: white;
+    width: 90px;
+    height: 30px;
+    font-family: Courier ;
+  }
+  #continueK {
+    font-size: 16pt;
+    background-color: rgb(41, 41, 41);
+    color: white;
+    width: 90px;
+    height: 30px;
+    font-family: Courier ;
+  }
+  #continueM {
+    font-size: 16pt;
+    background-color: rgb(41, 41, 41);
     color: white;
     width: 90px;
     height: 30px;
