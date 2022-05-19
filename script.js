@@ -17,9 +17,12 @@ let continueKc = document.getElementById("continue-container");
 let continueK = document.getElementById("continueK");
 let continueF = document.getElementById("continueF");
 let continueM = document.getElementById("continueM");
-let canvasen = document.getElementById("canvas-container");
+let monsterlåda = document.getElementById("monster-container");
 let blålådan = document.getElementById("output-container");
 let bakgrund = document.getElementById("super-container");
+
+carImage.innerHTML = `<img src="./images/${currentImage}" />`;
+monsterlåda.textContent = "ヽ(。_°)ノ";
 
 let player = {
 	namn: "Link",
@@ -30,8 +33,6 @@ let player = {
 
 let max_liv = 100;
 
-newMonster();
-
 dörr1.textContent = "1";
 dörr2.textContent = "2";
 dörr3.textContent = "3";
@@ -39,9 +40,6 @@ stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}/${max_liv}, S
 outputText.textContent =
 	"Du har tre dörrar framför dig. Vilken vill du gå ni i? Klicka på en dörr för att öppna den.";
 
-//problem under
-//----------------------------------------------
-// Man kan t ex ställa färgen på ett område
 outputText.style.backgroundColor = "none";
 
 class Items {
@@ -116,15 +114,15 @@ let Marken = new Existerande();
 let Ryggsäck = new inventory();
 
 //skapar items --> looten
-let items = new Items("svärd", 1, 20);
+let items = new Items("svärd", 1, 50);
 Marken.LTS(items);
-items = new Items("sten", 5, 15);
+items = new Items("sten", 5, 30);
 Marken.LTS(items);
-items = new Items("Stekpanna", 10, 10);
+items = new Items("Stekpanna", 10, 25);
 Marken.LTS(items);
-items = new Items("Banan", 20, 0);
+items = new Items("Banan", 20, 10);
 Marken.LTS(items);
-items = new Items("Salt", 100, -99);
+items = new Items("Salt", 100, -90);
 Marken.LTS(items);
 items = new Items("Avokado", 0, 100);
 Marken.LTS(items);
@@ -260,7 +258,6 @@ function monster() {
 	continue_av();
 	alt_på();
 	alt1.addEventListener("click", slå_till);
-	alert("tilldelad");
 	alt2.addEventListener("click", spring_iväg);
 	alt1.textContent = "slå till";
 	alt2.textContent = "spring!!";
@@ -372,9 +369,7 @@ function monster() {
 			} else if (spring == 1) {
 				outputText.textContent = "du sprang iväg";
 				continueM_på();
-				alert("bhnjmkl");
 				continueM.addEventListener("click", redo_text);
-				alert("Sprang");
 				//du sprang iväg - nästa dörr
 			}
 		}
@@ -385,9 +380,7 @@ function monster() {
 			} else if (spring < 3) {
 				outputText.textContent = "du sparng iväg";
 				continueM_på();
-				alert("bhnjmkl");
 				continueM.addEventListener("click", redo_text);
-				alert("Sprang");
 
 				//du sprang iväg - ny dörr
 			}
@@ -404,7 +397,7 @@ function kista() {
 	alt_av();
 	outputText.textContent = "Yeeey!! En kista!!";
 
-	let R = Math.floor(Math.random() * 2 + 1);
+	let R = Math.floor(Math.random() * 3 + 1);
 
 	function spara() {
 		alert("sparad");
@@ -424,6 +417,9 @@ function kista() {
 
 		if (Mitt_Item.typ == "Salt") {
 			player.liv = max_liv;
+		}
+		if (aaa.typ == "Salt") {
+			player.liv += 50;
 		}
 
 		uppdatering_stats();
@@ -503,10 +499,6 @@ function fälla() {
 	continueF_på();
 	let sortsfälla = Math.floor(Math.random() * 8);
 	player.liv -= 0;
-	player.liv = $;
-	{
-		player.liv;
-	}
 	if (sortsfälla == 0 || sortsfälla == 1) {
 		function fällaliv1() {
 			continue_av();
@@ -630,15 +622,12 @@ function slumpa_händelse() {
 	let slumpad_händelse = Math.floor(Math.random() * 3);
 
 	if (slumpad_händelse == 0) {
-		alert("monster");
 		monster();
 	}
 	if (slumpad_händelse == 1) {
-		alert("fälla");
 		fälla();
 	}
 	if (slumpad_händelse == 2) {
-		alert("kista");
 		kista();
 	}
 }

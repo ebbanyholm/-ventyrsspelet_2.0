@@ -78,14 +78,15 @@ body {
     margin: 5%;
     border: solid; 
   }
-  #canvas-container {
+  #monster-container {
     /*Rutan som knapparna visas i*/
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centering i kolumnen, dvs vertikalt */
     margin: 1%;
-    padding: 3%;
+    padding: 1%;
     width: 50%;
+    color: white;
     border: solid rgb(46, 46, 46); 
   }
   
