@@ -2,7 +2,7 @@ body {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(#1d1b18, #312e29);
+    background: #1d1b18;
   }
   
   #super-container {
@@ -23,13 +23,12 @@ body {
     flex-direction: column;
     margin-top: 10px;
     margin-bottom: 1px;
-    width: 100%;
-  
+    width: 80%;
     background-color: transparent;
     border: solid; 
   }
   #stats-text-container{
-    font-family: serif;
+    font-family: Courier;
     font-size: 20px;
     color: white;
     margin: 1%;
@@ -37,6 +36,7 @@ body {
     height: 10vh;
     padding: 0%;
     text-align: left;
+    margin-top: 10px;
   }
   
   #dörrar-container {
@@ -79,51 +79,55 @@ body {
     border: solid; 
   }
   #monster-container {
-    /*Rutan som knapparna visas i*/
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centering i kolumnen, dvs vertikalt */
     margin: 1%;
     padding: 1%;
-    width: 50%;
-    color: white;
-    border: solid rgb(46, 46, 46); 
+    border: solid transparent; 
   }
-  
+  #monster-låda {
+    font-size: 20pt;
+    background-color: rgb(54, 36, 22);
+    color: transparent;
+    width: 100px;
+    height: 200px;
+  }
+
   #dörr-1 {
     font-size: 20pt;
     background-color: rgb(54, 36, 22);
     color: black;
-    width: 100px;
-    height: 200px;
+    width: 120px;
+    height: 270px;
   }
   
   #dörr-2 {
     font-size: 20pt;
     background-color:rgb(54, 36, 22);
     color: black;
-    width: 100px;
-    height: 200px;
+    width: 120px;
+    height: 270px;
   }
   
   #dörr-3 {
     font-size: 20pt;
     background-color: rgb(54, 36, 22);
     color: black;
-    width: 100px;
-    height: 200px;
+    width: 120px;
+    height: 270px;
   }
   
-  
-  #alt-1-container {
+  #spara-container {
     /*Rutan som knapparna visas i*/
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centering i kolumnen, dvs vertikalt */
     margin: 5%;
     border: solid; 
+
   }
-  #alt-2-container {
+  #släng-container {
     /*Rutan som knapparna visas i*/
     display: flex;
     flex-direction: row;
@@ -131,21 +135,55 @@ body {
     margin: -2%;
     border: solid; 
   }
-  #alt-1 {
-    font-size: 12pt;
-    background-color:rgb(40, 38, 37);
+  #slå-container {
+    /*Rutan som knapparna visas i*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centering i kolumnen, dvs vertikalt */
+    margin: 5%;
+    border: solid; 
+
+  }
+  #spring-container {
+    /*Rutan som knapparna visas i*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centering i kolumnen, dvs vertikalt */
+    margin: -2%;
+    border: solid; 
+  }
+  #spara {
+    font-size: 8pt;
+    background-color:rgb(29, 46, 45);
     color: rgb(202, 195, 190);
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 70px;
   }
   
-  #alt-2 {
-    font-size: 12pt;
-    background-color: rgb(69, 17, 11);
+  #släng {
+    font-size: 8pt;
+    background-color: rgb(57, 54, 18);
     color:  rgb(202, 195, 190);
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 70px;
   }
+  #slå {
+    font-size: 10pt;
+    background-color:rgb(29, 11, 62);
+    color: rgb(202, 195, 190);
+    width: 40px;
+    height: 70px;
+  }
+  
+  #spring {
+    font-size: 10pt;
+    background-color: rgb(23, 51, 26);
+    color:  rgb(202, 195, 190);
+    width: 40px;
+    height: 70px;
+  }
+  
+  
   
   #output-container {
     display: flex; /* Flex ger ett rutmönster */
