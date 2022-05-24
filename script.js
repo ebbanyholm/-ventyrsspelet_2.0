@@ -1,4 +1,4 @@
-// Taggarna output-text och output-container återfinns i HTML-filen
+//Kopplar element från HTML-filen till java-filen
 let outputText = document.getElementById("text-container");
 let stats_text = document.getElementById("stats-text-container");
 let dörr1c = document.getElementById("dörr-1-container");
@@ -7,27 +7,22 @@ let dörr3c = document.getElementById("dörr-3-container");
 let dörr1 = document.getElementById("dörr-1");
 let dörr2 = document.getElementById("dörr-2");
 let dörr3 = document.getElementById("dörr-3");
-let sparac = document.getElementById("spara-container");
-let slängc = document.getElementById("släng-container");
+let alt1c = document.getElementById("alt1-container");
+let alt2c = document.getElementById("alt2-container");
 
-let släng = document.getElementById("släng");
-let spara = document.getElementById("spara");
-
-let slåc = document.getElementById("slå-container");
-let springc = document.getElementById("spring-container");
-let slå = document.getElementById("slå");
-let springk = document.getElementById("spring");
+let alt1 = document.getElementById("alt1");
+let alt2 = document.getElementById("alt2");
 
 let inventoryContainer = document.getElementById("inventory-container");
 let continueKc = document.getElementById("continue-container");
 let continueK = document.getElementById("continueK");
-let continueF = document.getElementById("continueF");
-let continueM = document.getElementById("continueM");
+
 let monsterc = document.getElementById("monster-container");
 let monsterlåda = document.getElementById("monster-låda");
 let blålådan = document.getElementById("output-container");
 let bakgrund = document.getElementById("super-container");
 
+//Skapar spelaren
 let player = {
 	namn: "Link",
 	liv: 100,
@@ -35,17 +30,22 @@ let player = {
 	styrka: 10,
 };
 
+//Sätter en maxgräns på antal liv man kan ha
 let max_liv = 100;
 
+//Skriver saker på dörrarna, information om spelaren och text
 dörr1.textContent = "1";
 dörr2.textContent = "2";
 dörr3.textContent = "3";
+
 stats_text.textContent = `Namn: ${player.namn}, Liv: ${player.liv}/${max_liv}, Styrka: ${player.styrka}, Lvl: ${player.level}`;
+
 outputText.textContent =
 	"Du har tre dörrar framför dig. Vilken vill du gå ni i? Klicka på en dörr för att öppna den.";
 
 outputText.style.backgroundColor = "none";
 
+//Skapar klassen "Items" med attributerna typ, styrka och liv
 class Items {
 	constructor(typ, styrka, liv) {
 		this.typ = typ;
@@ -54,6 +54,7 @@ class Items {
 	}
 }
 
+//Skapar klassen "Existerande" som ska vara en stack för att hålla alla existerande items
 class Existerande {
 	constructor() {
 		this.loot = [];
@@ -63,11 +64,9 @@ class Existerande {
 		this.loot.push(saker);
 		console.log("lägg till saker Marken");
 	}
-	//lägger till alla skapade varor i loooooten
 
 	TaSaker() {
 		let funnet_loot = this.loot.pop();
-		// ej samma sker twice
 		console.log("ta saker Marken");
 		return funnet_loot;
 	}
@@ -90,6 +89,7 @@ class Existerande {
 	}
 }
 
+//Skapar klassen "inventory" som är en stack som ska hålla den saken man har
 class inventory {
 	constructor() {
 		this.ficka = [];
@@ -98,14 +98,12 @@ class inventory {
 	Få(saker) {
 		this.ficka.push(saker);
 		console.log("få saker till ryggsäck");
-		//lägg till
 	}
 
 	Ta() {
 		let funnet_loot = this.ficka.pop();
 		console.log("Ta från ryggsäck");
 		return funnet_loot;
-		//ta bort
 	}
 
 	Visa() {
@@ -116,34 +114,46 @@ class inventory {
 			);
 		});
 	}
-	//visa saker
 }
 
+//Skapar Marken som är ny stack
 let Marken = new Existerande();
-//marken är lootet
+
+//Sapar Ryggsäck som är en ny stack
 let Ryggsäck = new inventory();
 
-//skapar items --> looten
-let items = new Items("svärd", 5, 50);
+//Skapar alla items och lägger in dem i marken
+let items = new Items("Svärd", 20, 15);
 Marken.LTS(items);
-items = new Items("sten", 8, 30);
+items = new Items("Sten", 10, 20);
 Marken.LTS(items);
-items = new Items("Stekpanna", 10, 25);
+items = new Items("Stekpanna", 10, 50);
 Marken.LTS(items);
-items = new Items("Banan", 20, 10);
+items = new Items("Banan", 25, 15);
 Marken.LTS(items);
 items = new Items("Salt", 100, -90);
 Marken.LTS(items);
 items = new Items("Avokado", 0, 100);
 Marken.LTS(items);
-items = new Items("Master sword", 100, 100);
+items = new Items("Master sword", 50, 100);
+Marken.LTS(items);
+items = new Items("Råttan", 1, 1);
+Marken.LTS(items);
+items = new Items("Pistol", 73, 73);
+Marken.LTS(items);
+items = new Items("Filt", 15, 30);
+Marken.LTS(items);
+items = new Items("Den onödga 11:fte saken", 20, 20);
 Marken.LTS(items);
 
 Marken.visaExisterande();
 
+//Skapar ett item och lägger in det i ryggsäcken
 let saker = new Items("Dammkorn", 0, 0);
 Ryggsäck.Få(saker);
+inventoryContainer.textContent = `Just nu har du ${Ryggsäck.ficka[0].typ} med styrkan ${Ryggsäck.ficka[0].styrka} och med bonusliv ${Ryggsäck.ficka[0].liv}`;
 
+//Gör att man kan klicka på knapparna och kopplar funktioner till dem
 dörr1.addEventListener("click", slumpa_händelse);
 dörr2.addEventListener("click", slumpa_händelse);
 dörr3.addEventListener("click", slumpa_händelse);
@@ -169,121 +179,80 @@ function dörrar_på() {
 	dörr3c.style.color = "gray";
 }
 function töm_alt_text() {
-	spara.textContent = "";
-	släng.textContent = "";
-	slå.textContent = "";
-	springk.textContent = "";
+	alt1.textContent = "";
+	alt2.textContent = "";
 }
 function alt_av() {
-	spara.disabled = true;
-	släng.disabled = true;
+	alt1.disabled = true;
+	alt2.disabled = true;
 
-	slå.disabled = true;
-	springk.disabled = true;
-
-	springk.style.backgroundColor = "rgb(36, 36, 36)";
-	spara.style.backgroundColor = "rgb(36, 36, 36 )";
-	släng.style.backgroundColor = "rgb(36, 36, 36)";
-	slå.style.backgroundColor = "rgb(36, 36, 36)";
+	alt1.style.backgroundColor = "rgb(36, 36, 36)";
+	alt2.style.backgroundColor = "rgb(36, 36, 36 )";
 	töm_alt_text();
 }
 function alt_påK() {
-	spara.disabled = false;
-	släng.disabled = false;
-	spara.style.backgroundColor = "rgb(29, 46, 45)";
-	släng.style.backgroundColor = "rgb(57, 54, 18)";
-	slå.style.backgroundColor = "rgba(36, 36, 36, 0.58)";
-	springk.style.backgroundColor = "rgba(36, 36, 36, 0.58)";
-	spara.textContent = "Spara";
-	släng.textContent = "Släng";
-}
-function alt_påM() {
-	slå.disabled = false;
-	springk.disabled = false;
-	spara.style.backgroundColor = "rgba(36, 36, 36, 0.58)";
-	släng.style.backgroundColor = "rgba(36, 36, 36, 0.58)";
-	slå.style.backgroundColor = "rgb(29, 11, 62)";
-	springk.style.backgroundColor = "rgb(23, 51, 26)";
-	slå.textContent = "Slå";
-	springk.textContent = "Spring";
+	alt1.disabled = false;
+	alt2.disabled = false;
+	alt1.style.backgroundColor = "rgb(34, 110, 105)";
+	alt2.style.backgroundColor = "rgb(105, 95, 14)";
+	alt1.textContent = "Spara";
+	alt2.textContent = "Släng";
 }
 function continue_av() {
 	continueK.disabled = true;
-	continueF.disabled = true;
-	continueM.disabled = true;
 	continueK.style.backgroundColor = "rgb(41, 41, 41)";
-	continueF.style.backgroundColor = "rgb(41, 41, 41)";
-	continueM.style.backgroundColor = "rgb(41, 41, 41)";
-	continueF.textContent = " ";
 	continueK.textContent = " ";
-	continueM.textContent = " ";
-}
-
-function continueF_på() {
-	continueF.disabled = false;
-	continueK.disabled = true;
-	continueM.disabled = true;
-	continueF.textContent = "→";
-	continueF.style.backgroundColor = "rgb(1, 50, 32)";
 }
 function continueK_på() {
 	continueK.disabled = false;
-	continueM.disabled = true;
-	continueF.disabled = true;
 	continueK.textContent = "→";
-	continueK.style.backgroundColor = "rgb(1, 50, 2)";
+	continueK.style.backgroundColor = "rgb(6, 45, 112)";
 }
-function continueM_på() {
-	continueM.disabled = false;
-	continueK.disabled = true;
-	continueF.disabled = true;
-	continueM.textContent = "→";
-	continueM.style.backgroundColor = "rgb(1, 50, 32)";
-}
+
 function redo_text() {
+	continueK.removeEventListener("click", redo_text);
+	monsterc.innerHTML = `<img src="./images/tom.png" />`;
 	outputText.textContent = "Du är nu redo för ditt nästa val";
+	inventoryContainer.textContent = `Just nu har du ${Ryggsäck.ficka[0].typ} med styrkan ${Ryggsäck.ficka[0].styrka} och med bonusliv ${Ryggsäck.ficka[0].liv}`;
+
 	continue_av();
 	dörrar_på();
 	alt_av();
 }
-/*function från_start() {
-	dörrar_på;
-	continueK_av;
-	alt_av;
-	dörr1.addEventListener("click", slumpa_händelse);
-	dörr2.addEventListener("click", slumpa_händelse);
-	dörr3.addEventListener("click", slumpa_händelse);
-}*/
 
 function du_dog() {
+	continueK_på();
+	uppdatering_stats();
 	function du_dog_text() {
 		outputText.textContent = "du dog";
-		alt_av;
-		continue_av;
-		dörrar_av;
+		dörr1.removeEventListener("click", slumpa_händelse);
+		dörr2.removeEventListener("click", slumpa_händelse);
+		dörr3.removeEventListener("click", slumpa_händelse);
+		alt_av();
+		continue_av();
+		dörrar_av();
 		blålådan.style.background = "black";
 		dörr1.style.background = "black";
 		dörr2.style.background = "black";
 		dörr3.style.background = "black";
 		bakgrund.style.background = "black";
 		outputText.style.fontSize = 22;
+		inventoryContainer.textContent = " ";
 	}
 	continueK.addEventListener("click", du_dog_text);
 }
 function du_vann() {
-	function du_vann_text() {
-		outputText.textContent = "Du vann";
-		alt_av;
-		continue_av;
-		dörrar_av;
-		blålådan.style.background = "blue";
-		dörr1.style.background = "blue";
-		dörr2.style.background = "blue";
-		dörr3.style.background = "blue";
-		bakgrund.style.background = "blue";
-		outputText.style.fontSize = 22;
-	}
-	continueK.addEventListener("click", du_vann_text);
+	monsterc.innerHTML = `<img src="./images/lila.png" />`;
+	uppdatering_stats();
+	outputText.style.fontSize = 30;
+	dörr1.removeEventListener("click", slumpa_händelse);
+	dörr2.removeEventListener("click", slumpa_händelse);
+	dörr3.removeEventListener("click", slumpa_händelse);
+	continueK.style.backgroundColor = "rgb( 41, 41, 41)";
+	bakgrund.style.background = "rgb(82, 4, 94)";
+	outputText.textContent = "Du vann.";
+	inventoryContainer.textContent = " ";
+	continue_av();
 }
 
 function välj_dörr() {
@@ -294,7 +263,7 @@ function välj_dörr() {
 		"Du har tre dörrar framför dig. Vilken vill du gå ni i? Klicka på en dörr för att öppna den.";
 }
 
-let m_hp = 0;
+let m_liv = 0;
 let m_styrka = 0;
 //--------------------------------------------------- M O N S T E R ----------------------------------------------------
 function mMonster() {
@@ -309,40 +278,74 @@ function mMonster() {
 		m_styrka = Math.floor(Math.random() * 10 + 25);
 		m_liv = Math.floor(Math.random() * 10 + 25);
 	}
+	let randomNumber = Math.floor(Math.random() * 8);
+	function alt_påM() {
+		alt1.disabled = false;
+		alt2.disabled = false;
+		alt1.textContent = "Slå";
+		alt2.textContent = "Spring";
+		if (randomNumber == 0) {
+			alt1.style.backgroundColor = "rgb(70, 134, 18)";
+			alt2.style.backgroundColor = "rgb(119, 25, 121)";
+		} else if (randomNumber == 1) {
+			alt1.style.backgroundColor = "rgb(2, 60, 139)";
+			alt2.style.backgroundColor = "rgb(88, 8, 86)";
+		} else if (randomNumber == 2) {
+			alt1.style.backgroundColor = "rgb(122, 69, 205)";
+			alt2.style.backgroundColor = "rgb(37, 134, 126)";
+		} else if (randomNumber == 3) {
+			alt1.style.backgroundColor = "rgb(190, 42, 42)";
+			alt2.style.backgroundColor = "rgb(56, 96, 29)";
+		} else if (randomNumber == 4) {
+			alt1.style.backgroundColor = "rgb(14, 143, 157)";
+			alt2.style.backgroundColor = "rgb(13, 69, 143)";
+		} else if (randomNumber == 5) {
+			alt1.style.backgroundColor = "rgb(7, 133, 56)";
+			alt2.style.backgroundColor = "rgb(124, 17, 65)";
+		} else if (randomNumber == 6) {
+			alt1.style.backgroundColor = "rgb(196, 117, 38)";
+			alt2.style.backgroundColor = "rgb(120, 21, 62)";
+		} else if (randomNumber == 7) {
+			alt1.style.backgroundColor = "rgb(204, 61, 130)";
+			alt2.style.backgroundColor = "rgb(8, 106, 103)";
+		}
+	}
+
+	monsterc.innerHTML = `<img src="./images/monster${randomNumber + 1}.png" />`;
+	if (randomNumber == 0) {
+		alt1.style.backgroundColor = "rgb(132, 38, 20)";
+		alt2.style.backgroundColor = "rgb(132, 38, 20)";
+	}
 
 	function frånMbörjan() {
-		continueM_på();
+		continueK_på();
 		alt_av();
 		dörrar_av();
-		continueM.addEventListener("click", monster);
+		continueK.addEventListener("click", monster);
 	}
 
 	function monster() {
+		continueK.removeEventListener("click", monster);
 		console.log("monster funktion");
-		//monsterlåda.innerHTML = '<img src="./images/monster1.png />';
 
 		outputText.textContent =
 			"Du står öga mot öga med ett monster..Vad vill du göra";
 		dörrar_av();
 		continue_av();
 		alt_påM();
-		slå.addEventListener("click", slå_till);
-		springk.addEventListener("click", spring_iväg);
+		alt1.addEventListener("click", slå_till);
+		alt2.addEventListener("click", spring_iväg);
 
-		/*if (m_hp <= 0) {
-			outputText.textContent("Du dödade monstret och gick där med upp en level.");
-			player.level += 1;
+		function m_stats() {
+			inventoryContainer.textContent = `monstrets liv: ${m_liv}   monstrets styrka: ${m_styrka}`;
 		}
-		if (player.liv <= 0) {
-			outputText.textContent("Game Over. Du dog");
-		}*/
-
-		inventoryContainer.textContent = `monstrets liv: ${m_liv}
-		monstrets styrka: ${m_styrka}`;
+		m_stats();
 
 		function slå_till() {
+			alt1.removeEventListener("click", slå_till);
+			alt2.removeEventListener("click", spring_iväg);
 			console.log("slag");
-			continueM_på();
+			continueK_på();
 			alt_av();
 			dörrar_av();
 			let strid = Math.floor(Math.random() * (4 - 1) + 1);
@@ -352,65 +355,72 @@ function mMonster() {
 				outputText.textContent =
 					"Du tar i och svingar ett stort slag mot monstret. Monstret kan inte undvika det och tar skada";
 				m_liv -= player.styrka;
+				m_stats();
 				if (m_liv <= 0) {
 					console.log("dödat monster");
+					monsterc.innerHTML = `<img src="./images/tom.png" />`;
 					dödat_monster();
 					function dödat_monster() {
 						player.level += 1;
 						if (player.level >= 15) {
 							du_vann();
+						} else {
+							outputText.textContent =
+								"Du dödade monstret och gick upp en level.";
+							uppdatering_stats();
+							alt_av();
+							continueK_på();
+							continueK.addEventListener("click", redo_text);
 						}
-						outputText.textContent =
-							"Du dödade monstret och gick upp en level.";
-						uppdatering_stats();
-						continueM_på();
-						continueM.addEventListener("click", redo_text);
 					}
 				} else {
 					console.log("skadat monster");
-					continueM_på();
-					continueM.addEventListener("click", m_slag);
+					continueK_på();
+					continueK.addEventListener("click", m_slag);
 				}
 			} else {
 				console.log("missar monstret");
 				outputText.textContent =
 					"Du tar och försöker skada monstret med din styrka. Du är för långsam och monstret har bra reflexer. Du missade monstret";
-				continueM_på();
-				continueM.addEventListener("click", m_slag);
+				continueK_på();
+				continueK.addEventListener("click", m_slag);
 			}
 
 			function m_slag() {
+				continueK.removeEventListener("click", m_slag);
 				console.log("monstret laddar");
 				outputText.textContent =
 					"Du är utmattad. Monstret tar i från tårna med ett STORT slag"; //
-				continueM_på();
+				continueK_på();
 				visa_resultat();
 				function visa_resultat() {
 					console.log("visa_resultat");
-					continueM_på();
+					continueK_på();
 					dörrar_av();
 					alt_av();
-					continueM.addEventListener("click", m_slag_resultat);
+					continueK.addEventListener("click", m_slag_resultat);
 
 					function m_slag_resultat() {
+						continueK.removeEventListener("click", m_slag_resultat);
 						console.log("monster resultat");
-						continueM_på();
+						continueK_på();
 						dörrar_av();
 						alt_av();
 						resultat();
 						function resultat() {
 							console.log("slumpar monster slag resultat");
 							let m_resultat = Math.floor(Math.random() * 2);
-							if (m_resultat <= 1) {
+							if (m_resultat < 1) {
 								console.log("monstret missar");
 								outputText.textContent = "Monstret missade dig";
 								frånMbörjan();
-							} else if (m_resultat > 1) {
+							} else if (m_resultat >= 1) {
 								console.log("monstret träffar");
 								outputText.textContent = "Monstret träffade dig";
-								continueM.addEventListener("click", förlora_liv);
+								continueK.addEventListener("click", förlora_liv);
 
 								function förlora_liv() {
+									continueK.removeEventListener("click", förlora_liv);
 									console.log("förlora liv efter monstret träffar");
 									alt_av();
 									dörrar_av();
@@ -426,39 +436,37 @@ function mMonster() {
 								}
 							}
 						}
-						resultat();
 					}
 				}
 			}
 		}
 		function spring_iväg() {
+			alt1.removeEventListener("click", slå_till);
+			alt2.removeEventListener("click", spring_iväg);
 			alt_av();
 			continue_av();
-			spring = Math.floor(Math.random() * (3 - 1) + 1);
-			//alert(spring);
+			lyckas_springaf = Math.floor(Math.random() * 2);
+
 			if (player.styrka <= m_styrka) {
-				if (spring > 1) {
+				if (lyckas_springaf >= 1) {
 					outputText.textContent = "Du misslyckades med att springa iväg.";
 					frånMbörjan();
-				} else if (spring == 1) {
+				} else if (lyckas_springaf == 0) {
 					outputText.textContent = "Du sprang iväg.";
 					dörrar_av();
-					continueM_på();
-					continueM.addEventListener("click", redo_text);
-					//du sprang iväg - nästa dörr
+					continueK_på();
+					continueK.addEventListener("click", redo_text);
 				}
 			}
 			if (player.styrka > m_styrka) {
-				if (spring == 3) {
+				if (lyckas_springaf == 2) {
 					outputText.textContent = "Du misslyckades med att springa iväg.";
 					frånMbörjan();
-				} else if (spring < 3) {
+				} else if (lyckas_springaf <= 2) {
 					outputText.textContent = "Du sprang iväg.";
 					dörrar_av();
-					continueM_på();
-					continueM.addEventListener("click", redo_text);
-
-					//du sprang iväg - ny dörr
+					continueK_på();
+					continueK.addEventListener("click", redo_text);
 				}
 			}
 		}
@@ -470,6 +478,7 @@ function mMonster() {
 let Mitt_Item = 0;
 let Merliv = 0;
 function kista() {
+	monsterc.innerHTML = `<img src="./images/kista_s.png" />`;
 	dörrar_av();
 	alt_av();
 	outputText.textContent = "Yeeey!! En kista!!";
@@ -477,14 +486,18 @@ function kista() {
 	let R = Math.floor(Math.random() * 2 + 1);
 
 	function spara1() {
+		alt1.removeEventListener("click", spara1);
+		alt2.removeEventListener("click", släng1);
+
 		alt_av();
+		dörrar_av();
 		console.log("spara");
 
-		let aaa = Ryggsäck.Ta();
-		Marken.LTS(aaa);
+		let slängt_item = Ryggsäck.Ta();
+		Marken.LTS(slängt_item);
 		Marken.visaExisterande();
-		player.styrka -= aaa.styrka;
-		max_liv -= aaa.liv;
+		player.styrka -= slängt_item.styrka;
+		max_liv -= slängt_item.liv;
 
 		Ryggsäck.Få(Mitt_Item);
 		outputText.textContent = `Du fick ${Mitt_Item.typ}`;
@@ -492,44 +505,51 @@ function kista() {
 		player.styrka += Mitt_Item.styrka;
 		max_liv += Mitt_Item.liv;
 
-		if (Mitt_Item.typ == "Salt") {
-			player.liv = max_liv;
-		}
-		if (aaa.typ == "Salt") {
+		if (slängt_item.typ == "Salt") {
 			player.liv += 100;
 		}
 		if (Mitt_Item.typ == "Master sword") {
 			player.liv = max_liv;
 		}
+		if (player.liv > max_liv) {
+			player.liv = max_liv;
+		}
 
 		uppdatering_stats();
-		inventoryContainer.textContent = `Just nu har du ${Ryggsäck.ficka[0].typ} med styrkan ${Ryggsäck.ficka[0].styrka} och med bonusliv ${Ryggsäck.ficka[0].liv}`;
 		dörrar_av();
 		redo_text();
 	}
 
 	function släng1() {
+		alt2.removeEventListener("click", släng1);
+		alt1.removeEventListener("click", spara1);
+
 		alt_av();
+		dörrar_av();
 		console.log("släng");
 		outputText.textContent = `Du döda ditt nya item och slände iväg det`;
 		Marken.LTS(Mitt_Item);
 		continueK_på();
-		continueK.addEventListener("click", sad);
+		continueK.addEventListener("click", för_att_fortsätta);
 	}
 
-	function sad() {
+	function för_att_fortsätta() {
+		continueK.removeEventListener("click", för_att_fortsätta);
+		dörrar_på();
 		continue_av();
 		redo_text();
 	}
 
 	function frågan() {
 		alt_påK();
-		spara.addEventListener("click", spara1);
-		släng.addEventListener("click", släng1);
+		alt1.addEventListener("click", spara1);
+		alt2.addEventListener("click", släng1);
 		console.log("fråga");
 	}
 
 	function hittade() {
+		continueK.removeEventListener("click", hittade);
+		monsterc.innerHTML = `<img src="./images/kista_ö.png" />`;
 		continue_av();
 		outputText.textContent = `Du har hittat ${Mitt_Item.typ} med styrkan ${Mitt_Item.styrka} och bonusliv ${Mitt_Item.liv}. Vill du spara den?`;
 		inventoryContainer.textContent = `Just nu har du ${Ryggsäck.ficka[0].typ} med styrkan ${Ryggsäck.ficka[0].styrka} och med bonusliv ${Ryggsäck.ficka[0].liv}`;
@@ -548,13 +568,17 @@ function kista() {
 	}
 
 	function fortsätt() {
+		continueK.removeEventListener("click", fortsätt);
 		continue_av();
 		dörrar_på();
 		redo_text();
 	}
 
 	function skriv_ut() {
+		continueK.removeEventListener("click", skriv_ut);
+		monsterc.innerHTML = `<img src="./images/kista_ö.png" />`;
 		continue_av();
+		dörrar_av();
 		player.liv += Merliv;
 		outputText.textContent = `Du fick ${Merliv} mer i liv`;
 
@@ -566,7 +590,7 @@ function kista() {
 		continueK.addEventListener("click", fortsätt);
 	}
 
-	function snälla() {
+	function för_att_skriva_ut() {
 		continueK_på();
 		continueK.addEventListener("click", skriv_ut);
 	}
@@ -575,8 +599,8 @@ function kista() {
 		console.log("Grej");
 		visa_föremål();
 	} else {
-		Merliv = Math.floor(Math.random() * (100 - 1) + 1);
-		snälla();
+		Merliv = Math.floor(Math.random() * (50 - 1) + 20);
+		för_att_skriva_ut();
 	}
 }
 
@@ -585,17 +609,16 @@ function kista() {
 function fälla() {
 	alt_av();
 	dörrar_av();
-	continueF_på();
+	continueK_på();
 	let sortsfälla = Math.floor(Math.random() * 8 + 1);
-	player.liv -= 0;
 	if (sortsfälla == 1 || sortsfälla == 2) {
 		function fällaliv1() {
+			continueK.removeEventListener("click", fällaliv1);
 			continue_av();
 			player.liv -= 3;
-			player.liv -= 0;
 			uppdatering_stats();
 			if (player.liv <= 0) {
-				outputText.textContent("Game Over. Du dog");
+				outputText.textContent = "Game Over. Du dog";
 				continue_av();
 				du_dog();
 			} else {
@@ -604,21 +627,19 @@ function fälla() {
 				redo_text();
 			}
 		}
-		fast = true;
 		outputText.textContent =
 			"Du såg inte att golvet saknades i vissa delar, du råkar kliva i ett av hålen och stukar foten. Du förlorar 3 liv.";
 		töm_alt_text();
-		continueF.addEventListener("click", fällaliv1);
+		continueK.addEventListener("click", fällaliv1);
 	}
 
 	if (sortsfälla == 3 || sortsfälla == 4) {
 		function fällaliv2() {
+			continueK.removeEventListener("click", fällaliv2);
 			continue_av();
 			player.liv -= 6;
-			player.liv -= 0;
 			uppdatering_stats();
 			if (player.liv <= 0) {
-				outputText.textContent("Game Over. Du dog");
 				continue_av();
 				du_dog();
 			} else {
@@ -627,21 +648,19 @@ function fälla() {
 				redo_text();
 			}
 		}
-		fast = true;
 		outputText.textContent =
 			"Du märkte inte att det var en glasvägg framför dig, du går in i den och bryter näsan. Du förlorar 6 liv.";
 		töm_alt_text();
-		continueF.addEventListener("click", fällaliv2);
+		continueK.addEventListener("click", fällaliv2);
 	}
 
 	if (sortsfälla == 5 || sortsfälla == 6) {
 		function fällaliv3() {
+			continueK.removeEventListener("click", fällaliv3);
 			continue_av();
 			player.liv -= 9;
-			player.liv -= 0;
 			uppdatering_stats();
 			if (player.liv <= 0) {
-				outputText.textContent("Game Over. Du dog");
 				continue_av();
 				du_dog();
 			} else {
@@ -650,21 +669,19 @@ function fälla() {
 				redo_text();
 			}
 		}
-		fast = true;
 		outputText.textContent =
 			"Plötsligt kommer du till en avsats, du tappar balansen och faller ner. Du förlorar 9 liv.";
 		töm_alt_text();
-		continueF.addEventListener("click", fällaliv3);
+		continueK.addEventListener("click", fällaliv3);
 	}
 
 	if (sortsfälla == 7) {
 		function fällaliv4() {
+			continueK.removeEventListener("click", fällaliv4);
 			continue_av();
 			player.liv -= 12;
-			player.liv -= 0;
 			uppdatering_stats();
 			if (player.liv <= 0) {
-				outputText.textContent("Game Over. Du dog");
 				continue_av();
 				du_dog();
 			} else {
@@ -673,21 +690,19 @@ function fälla() {
 				redo_text();
 			}
 		}
-		fast = true;
 		outputText.textContent =
 			"Du går igenom en dörr och märker en svart katt framför dig, du väljer att klappa katten och märker inte fällan du utlöser som skjuter en pil i din axel. Du förlorade 12 liv.";
 		töm_alt_text();
-		continueF.addEventListener("click", fällaliv4);
+		continueK.addEventListener("click", fällaliv4);
 	}
 
 	if (sortsfälla == 8) {
 		function fällaliv5() {
+			continueK.removeEventListener("click", fällaliv5);
 			continue_av();
 			player.liv -= 15;
-			player.liv -= 0;
 			uppdatering_stats();
 			if (player.liv <= 0) {
-				outputText.textContent("Game Over. Du dog");
 				continue_av();
 				du_dog();
 			} else {
@@ -696,20 +711,20 @@ function fälla() {
 				redo_text();
 			}
 		}
-		fast = true;
 		outputText.textContent =
 			"Det är en märklig del på golvet som är gjord av trä, du försöker gå över den men trillar igenom det ruttna träet på en vass sten. Du förlorade 15 liv.";
 		töm_alt_text();
-		continueF.addEventListener("click", fällaliv5);
+		continueK.addEventListener("click", fällaliv5);
 	}
 }
 
-//------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
 
 dörrar_på();
 continue_av();
 alt_av();
 function slumpa_händelse() {
+	monsterc.innerHTML = `<img src="./images/tom.png" />`;
 	let slumpad_händelse = Math.floor(Math.random() * 3);
 
 	if (slumpad_händelse == 0) {
@@ -722,9 +737,3 @@ function slumpa_händelse() {
 		kista();
 	}
 }
-
-// namnet = prompt("vad heter du?");
-// player.namn = namnet;
-// alert(`Du heter ${player.namn}`);
-
-// Lägger till en EventListener till outputContainer
